@@ -1,0 +1,10 @@
+/.venv
+.vscode
+/new_data
+data/
+*__pycache__
+*.pt
+/COCOdata
+*instances_val2017.json
+/train_model/instances_val2017.json
+weight/
