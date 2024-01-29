@@ -1,7 +1,6 @@
 import pandas as pd
-
 from torch.utils.data import Dataset
-from typing import Optional, List
+from typing import List
 from pathlib import Path
 import rasterio
 from tqdm import tqdm
@@ -13,27 +12,56 @@ from segmentation.scr.rle_coding import *
 
 
 from functools import lru_cache
+
 warnings.filterwarnings(
     "ignore", category=rasterio.errors.NotGeoreferencedWarning)
 
 
 @lru_cache(maxsize=128)
 def ropen(img_fpath):
+    """
+        Image reading and caching for speedup
+
+    Args:
+        img_fpath : path to image
+
+    """
     return rasterio.open(img_fpath)
 
 
-class TiledDataset(Dataset):
+class Generate_Tiled_Dataset(Dataset):
+    """
+    Сlass for generating tilling images and storing them in folders
+
+    https://www.kaggle.com/code/squidinator/sennet-hoa-in-memory-tiled-dataset-pytorch
+    """
+
     def __init__(
         self,
         name_data: str,
         path_img_dir: str,
         path_lb_dir: str,
-        tile_size: Optional[List] = CFG.tile_size,
-        overlap_pct: float = CFG.overlap_pct,
+        tile_size: List = CFG.tile_size,
+        overlap_pct: int = CFG.overlap_pct,
         strong_empty: bool = True,
         sample_limit: int = 30000 * 10,
-        cache_dir: str = None,
+        cache_dir: str = CFG.cache_dir,
     ):
+        """
+            Сlass initialization
+        Args:
+            name_data str: dataset_name
+            path_img_dir str: path to images
+            path_lb_dir str: path to labels
+            tile_size List : tilling size. Defaults to CFG.tile_size.
+            overlap_pct int: minimum overlap 
+            of tillings as a percentage. Defaults to CFG.overlap_pct.
+
+            strong_empty bool: stronger empty image filter. Defaults to True.
+            sample_limit int: limit the size of new images. Defaults to 30000*10.
+            cache_dir str: path to new images. Defaults to CFG.cache_dir.
+        """
+
         self.name_data = name_data
         self.path_img_dir = Path(path_img_dir)
         self.path_lb_dir = Path(path_lb_dir)
@@ -92,7 +120,8 @@ class TiledDataset(Dataset):
 
                     if self.strong_empty:
                         is_empty = is_empty or (
-                            mask_tile.sum() < (0.05 * self.tile_size[0]))
+                            mask_tile.sum() < (0.05 * self.tile_size[0])
+                        )
                     if is_empty:
                         empty += 1
                     else:
@@ -109,21 +138,23 @@ class TiledDataset(Dataset):
                         )
                     )
         print(
-            f'Dataset contains {empty} empty and {nonempty} non-empty tiles.')
+            f"Dataset contains {empty} empty and {nonempty} non-empty tiles.")
 
         self.tiles = []
         if self.cache_dir:
             if isinstance(self.cache_dir, str):
                 self.cache_dir = Path(self.cache_dir)
-            self.cache_dir_img = self.cache_dir / self.name_data / 'images'
-            self.cache_dir_lb = self.cache_dir / self.name_data / 'labels'
+            self.cache_dir_img = self.cache_dir / self.name_data / "images"
+            self.cache_dir_lb = self.cache_dir / self.name_data / "labels"
 
             self.cache_dir_img.mkdir(parents=True, exist_ok=True)
             self.cache_dir_lb.mkdir(parents=True, exist_ok=True)
 
         self.df = pd.DataFrame(
-            columns=['path_img', 'path_lb', 'is_empty', 'bbx', 'px_stats', 'size'])
-        self.path_df = self.cache_dir / (self.name_data + '.csv')
+            columns=["path_img", "path_lb",
+                     "is_empty", "bbx", "px_stats", "size"]
+        )
+        self.path_df = self.cache_dir / (self.name_data + ".csv")
 
         if self.sample_limit < len(list_tiles):
             pos_idxs_to_sample = np.random.choice(
@@ -136,21 +167,28 @@ class TiledDataset(Dataset):
     def __len__(self) -> int:
         return len(self.tiles)
 
-    def __getitem__(self, idx) -> tuple:
+    def __getitem__(self, idx: int) -> tuple:
         """
-        Returns a sample of data
+            Writing an image to a folder by index and writing to a dataframe
 
+        Args:
+            idx int: index
+
+        Returns:
+            tuple: str(img_fpath), rle, is_empty, bbox
         """
-        img_fpath, rle, is_empty, bbox,   px_stats, size = self.tiles[idx]
 
-        base_name = img_fpath.name.split('.')[0]
-        base_name += f'_{bbox[0]}_{bbox[1]}_{bbox[2]}_{bbox[3]}.png'
+        img_fpath, rle, is_empty, bbox, px_stats, size = self.tiles[idx]
+
+        base_name = img_fpath.name.split(".")[0]
+        base_name += f"_{bbox[0]}_{bbox[1]}_{bbox[2]}_{bbox[3]}.png"
 
         img_path = self.cache_dir_img / base_name
         lb_path = self.cache_dir_lb / base_name
 
         img = ropen(img_fpath).read(
-            1, window=rasterio.windows.Window(*bbox) if len(bbox) > 0 else None)
+            1, window=rasterio.windows.Window(*bbox) if len(bbox) > 0 else None
+        )
         if img.ndim == 3:
             img = np.mean(img, axis=2)
 
@@ -165,9 +203,14 @@ class TiledDataset(Dataset):
 
         if len(bbox) > 0:
             x, y, w, h = bbox
-            mask = mask[y:y + h, x:x + w]
+            mask = mask[y: y + h, x: x + w]
 
         cv2.imwrite(str(lb_path), mask)
         self.df.loc[idx, :] = [img_path, lb_path,
                                is_empty, bbox, px_stats, size]
-        return str(img_fpath), rle, is_empty, bbox,
+        return (
+            str(img_fpath),
+            rle,
+            is_empty,
+            bbox,
+        )
