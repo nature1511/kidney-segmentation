@@ -9,10 +9,7 @@ import cv2
 import warnings
 from segmentation.config import Configs as CFG
 from segmentation.scr.rle_coding import *
-
 PandasDataFrame = TypeVar('pandas.core.frame.DataFrame')
-
-
 def random_sub_df(df: PandasDataFrame, sample_limit: Optional[int] = None, empty_tile_pct: int = 10):
     """_summary_
 
@@ -49,7 +46,8 @@ def random_sub_df(df: PandasDataFrame, sample_limit: Optional[int] = None, empty
         num_empty_tiles_to_sample = int(sample_limit * empty_tile_pct / 100)
 
     print(
-        f"Sample {num_empty_tiles_to_sample} empty and {num_pos_tiles_to_sample} non-empty tiles.")
+        f"Sample {num_empty_tiles_to_sample} empty and 
+        {num_pos_tiles_to_sample} non-empty tiles.")
 
     df_empty = df[df['is_empty'] == True].sample(num_empty_tiles_to_sample)
     df_no_empty = df[df['is_empty'] == False].sample(num_pos_tiles_to_sample)
