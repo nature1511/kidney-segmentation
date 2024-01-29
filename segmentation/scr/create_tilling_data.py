@@ -61,7 +61,7 @@ class Generate_Tiled_Dataset(Dataset):
             sample_limit int: limit the size of new images. Defaults to 30000*10.
             cache_dir str: path to new images. Defaults to CFG.cache_dir.
         """
-
+        super().__init__()
         self.name_data = name_data
         self.path_img_dir = Path(path_img_dir)
         self.path_lb_dir = Path(path_lb_dir)
