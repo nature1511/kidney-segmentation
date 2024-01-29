@@ -4,6 +4,5 @@
 data/
 *__pycache__
 *.pt
-
 *instances_val2017.json
 weight/
