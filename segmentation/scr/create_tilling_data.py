@@ -1,6 +1,6 @@
 import pandas as pd
 from torch.utils.data import Dataset
-from typing import List
+from typing import List, Tuple, Union
 from pathlib import Path
 import rasterio
 from tqdm import tqdm
@@ -41,7 +41,7 @@ class Generate_Tiled_Dataset(Dataset):
         name_data: str,
         path_img_dir: str,
         path_lb_dir: str,
-        tile_size: List = CFG.tile_size,
+        tile_size: Union[List, Tuple] = CFG.tile_size,
         overlap_pct: int = CFG.overlap_pct,
         strong_empty: bool = True,
         sample_limit: int = 30000 * 10,
@@ -53,8 +53,8 @@ class Generate_Tiled_Dataset(Dataset):
             name_data str: dataset_name
             path_img_dir str: path to images
             path_lb_dir str: path to labels
-            tile_size List : tilling size. Defaults to CFG.tile_size.
-            overlap_pct int: minimum overlap 
+            tile_size List, Tuple : tilling size. Defaults to CFG.tile_size.
+            overlap_pct int: minimum overlap
             of tillings as a percentage. Defaults to CFG.overlap_pct.
 
             strong_empty bool: stronger empty image filter. Defaults to True.

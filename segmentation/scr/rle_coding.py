@@ -1,4 +1,5 @@
 import numpy as np
+
 """
 Code with description of rle coding.
 https://www.youtube.com/watch?v=LG8lbm_W380
@@ -27,8 +28,7 @@ def rle_decode(mask_rle, shape):
 
     """
     s = mask_rle.split()
-    starts, lengths = [np.asarray(x, dtype=int)
-                       for x in (s[0:][::2], s[1:][::2])]
+    starts, lengths = [np.asarray(x, dtype=int) for x in (s[0:][::2], s[1:][::2])]
     starts -= 1
     ends = starts + lengths
     img = np.zeros(shape[0] * shape[1], dtype=np.uint8)
