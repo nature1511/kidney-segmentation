@@ -199,7 +199,7 @@ class Generate_Tiled_Dataset(Dataset):
         img = img.astype(np.uint8)
         cv2.imwrite(str(img_path), img)
 
-        mask = rle_decode(rle, size).astype(np.uint8)
+        mask = (rle_decode(rle, size) * 255.0).astype(np.uint8)
 
         if len(bbox) > 0:
             x, y, w, h = bbox
