@@ -6,3 +6,7 @@ class Configs:
     tile_size = (512, 512)
     overlap_pct = 10
     cache_dir = "data"
+
+    # configs for transforms
+    p_rot = 0.3
+    p_aug = 0.3

@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Optional, TypeVar
-from segmentation.scr.rle_coding import *
+from segmentation.scr.utils.rle_coding import *
 
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
@@ -26,7 +26,8 @@ def random_sub_df(
     # pct_empty = df['is_empty'].value_counts(normalize=True)[True]
     count_no_empty = df["is_empty"].value_counts()[False]
     count_empty = df["is_empty"].value_counts()[True]
-    print(f"Dataset contains {count_empty} empty and {count_no_empty} non-empty tiles.")
+    print(
+        f"Dataset contains {count_empty} empty and {count_no_empty} non-empty tiles.")
 
     num_empty_tiles_to_sample = int(sample_limit * empty_tile_pct / 100)
     num_pos_tiles_to_sample = int(sample_limit * (1 - empty_tile_pct / 100))
@@ -34,7 +35,8 @@ def random_sub_df(
     if num_empty_tiles_to_sample > count_empty:
         num_empty_tiles_to_sample = count_empty
         sample_limit = int(count_empty / empty_tile_pct * 100)
-        num_pos_tiles_to_sample = int(sample_limit * (1 - empty_tile_pct / 100))
+        num_pos_tiles_to_sample = int(
+            sample_limit * (1 - empty_tile_pct / 100))
 
     if num_pos_tiles_to_sample > count_no_empty:
         num_pos_tiles_to_sample = count_no_empty

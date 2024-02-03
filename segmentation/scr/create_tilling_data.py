@@ -8,7 +8,7 @@ import numpy as np
 import cv2
 import warnings
 from segmentation.config import Configs as CFG
-from segmentation.scr.rle_coding import *
+from segmentation.scr.utils.rle_coding import *
 
 
 from functools import lru_cache
