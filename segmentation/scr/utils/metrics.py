@@ -7,7 +7,7 @@ def dice_coef(
     thr=0.5,
     dim=(-1, -2),
     smooth=0,
-    epsilon=1e-7,
+    # epsilon=1e-7,
 ):
     y_pred = y_pred.sigmoid()
     y_true = y_true.to(torch.float32)
