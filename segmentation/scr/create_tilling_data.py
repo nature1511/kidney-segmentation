@@ -11,10 +11,10 @@ from torch.utils.data import Dataset
 from tqdm import tqdm
 
 from segmentation.config import Configs as CFG
-from segmentation.scr.utils.rle_coding import *
+from collections import defaultdict
+from segmentation.scr.utils.rle_coding import rle_decode, rle_encode
 
-warnings.filterwarnings(
-    "ignore", category=rasterio.errors.NotGeoreferencedWarning)
+warnings.filterwarnings("ignore", category=rasterio.errors.NotGeoreferencedWarning)
 
 
 @lru_cache(maxsize=128)
@@ -72,19 +72,26 @@ class Generate_Tiled_Dataset(Dataset):
         self.cache_dir = cache_dir
 
         self.path_img_dir = sorted(list(self.path_img_dir.rglob("*.tif")))
-        self.samples = []
+        self.path_lb_dir = sorted(list(self.path_lb_dir.rglob("*.tif")))
 
-        for p_img in tqdm(
-            self.path_img_dir, total=len(self.path_img_dir), desc="Reading images"
-        ):
-            p_lb = self.path_lb_dir / p_img.name
+        images_labels = defaultdict(list)
+        for img in self.path_img_dir:
+            images_labels[img.name].append(img)
+        for lb in self.path_lb_dir:
+            images_labels[lb.name].append(lb)
+        new_dict = dict(filter(lambda item: len(item[1]) > 1, images_labels.items()))
+        print(f"Общее число изображений с масками сегментации : {len(new_dict)}")
+
+        self.samples = []
+        for key in tqdm(new_dict, total=len(new_dict), desc="Reading images"):
+            p_img, p_lb = new_dict[key]
+            # p_lb = self.path_lb_dir / p_img.name
             with rasterio.open(p_img) as reader:
                 width, height = reader.width, reader.height
                 img_r = reader.read()
                 px_max, px_min = img_r.max(), img_r.min()
             # print(p_lb)
-            self.samples.append(
-                (p_img, p_lb, [px_min, px_max], (height, width)))
+            self.samples.append((p_img, p_lb, [px_min, px_max], (height, width)))
 
         min_overlap = float(overlap_pct) * 0.01
         max_stride = self.tile_size * (1.0 - min_overlap)
@@ -102,15 +109,11 @@ class Generate_Tiled_Dataset(Dataset):
                 np.int64
             )
             starts = [
-                np.int32(np.linspace(
-                    0, height - self.tile_size[0], num_patches[0])),
-                np.int32(np.linspace(
-                    0, width - self.tile_size[1], num_patches[1])),
+                np.int32(np.linspace(0, height - self.tile_size[0], num_patches[0])),
+                np.int32(np.linspace(0, width - self.tile_size[1], num_patches[1])),
             ]
-            stops = [starts[0] + self.tile_size[0],
-                     starts[1] + self.tile_size[1]]
-            mask = cv2.imread(
-                str(label_path), cv2.IMREAD_GRAYSCALE).astype(np.uint8)
+            stops = [starts[0] + self.tile_size[0], starts[1] + self.tile_size[1]]
+            mask = cv2.imread(str(label_path), cv2.IMREAD_GRAYSCALE).astype(np.uint8)
             rle = rle_encode(mask)
 
             for y1, y2 in zip(starts[0], stops[0]):
@@ -137,8 +140,7 @@ class Generate_Tiled_Dataset(Dataset):
                             (height, width),
                         )
                     )
-        print(
-            f"Dataset contains {empty} empty and {nonempty} non-empty tiles.")
+        print(f"Dataset contains {empty} empty and {nonempty} non-empty tiles.")
 
         self.tiles = []
         if self.cache_dir:
@@ -151,8 +153,7 @@ class Generate_Tiled_Dataset(Dataset):
             self.cache_dir_lb.mkdir(parents=True, exist_ok=True)
 
         self.df = pd.DataFrame(
-            columns=["path_img", "path_lb",
-                     "is_empty", "bbx", "px_stats", "size"]
+            columns=["path_img", "path_lb", "is_empty", "bbx", "px_stats", "size"]
         )
         self.path_df = self.cache_dir / (self.name_data + ".csv")
 
@@ -203,11 +204,10 @@ class Generate_Tiled_Dataset(Dataset):
 
         if len(bbox) > 0:
             x, y, w, h = bbox
-            mask = mask[y: y + h, x: x + w]
+            mask = mask[y : y + h, x : x + w]
 
         cv2.imwrite(str(lb_path), mask)
-        self.df.loc[idx, :] = [img_path, lb_path,
-                               is_empty, bbox, px_stats, size]
+        self.df.loc[idx, :] = [img_path, lb_path, is_empty, bbox, px_stats, size]
         return (
             str(img_fpath),
             rle,
