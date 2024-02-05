@@ -1,11 +1,8 @@
 from typing import Optional, TypeVar
-
+from pathlib import Path
 import pandas as pd
-
 from torch.utils.data import Dataset
 from typing import Optional, TypeVar
-from pathlib import Path
-from torch.utils.data import Dataset
 
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
