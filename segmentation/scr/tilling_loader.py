@@ -1,7 +1,7 @@
 from typing import Optional, TypeVar
 
 import pandas as pd
-
+import numpy
 from segmentation.scr.utils.rle_coding import *
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
