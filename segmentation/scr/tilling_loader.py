@@ -1,7 +1,8 @@
-import pandas as pd
 from typing import Optional, TypeVar
-from segmentation.scr.utils.rle_coding import *
 
+import pandas as pd
+
+from segmentation.scr.utils.rle_coding import *
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
 

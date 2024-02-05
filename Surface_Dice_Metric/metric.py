@@ -1,14 +1,14 @@
 """Surface Dice metric for HuBMAP 4."""
 
-from scipy import ndimage
 import math
+from typing import Optional
+
 import numpy as np
 import pandas as pd
-import pandas.api.types
 from numba import jit
-from scipy.ndimage import label, generate_binary_structure
+from scipy import ndimage
+from scipy.ndimage import generate_binary_structure
 from skimage.transform import resize
-from typing import Optional, Tuple, Union
 
 
 class ParticipantVisibleError(Exception):

@@ -1,7 +1,9 @@
-from segmentation.config import Configs as CFG
+from typing import Optional
+
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
-from typing import List, Tuple, Optional
+
+from segmentation.config import Configs as CFG
 
 
 def get_transform(transform_type: Optional[str] = "weak"):

@@ -2,95 +2,95 @@
 <!-- saved from url=(0045)https://pvnieo.github.io/post/lr-finder-demo/ -->
 <html lang="en-us"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="generator" content="Source Themes Academic 4.4.0">
 
-  
 
-  
-  
-  
-  
-  
-    
-    
-    
-  
-  
+
+
+
+
+
+
+
+
+
+
+
 
   <meta name="author" content="Souhaib Attaiki">
 
-  
-  
-  
-    
-  
+
+
+
+
+
   <meta name="description" content="Learning rate finder During the training of neural networks, one of the most important hyperparameters, and which largely influences the convergence of the latter, is the learning rate. Choosing a good learning rate is not a simple task, and it is often done using a grid search. However, this can take a long time, especially if the network is very large.
 In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, Leslie Smith presented a method for finding a good learning rate for the majority of gradient based optimizers.">
 
-  
+
   <link rel="alternate" hreflang="en-us" href="https://pvnieo.github.io/post/lr-finder-demo/">
 
-  
 
 
-  
 
-  
-  
-  
+
+
+
+
+
   <meta name="theme-color" content="rgb(0, 136, 204)">
-  
 
-  
-  
-  
-  
-    
+
+
+
+
+
+
     <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
     <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
     <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
 
-    
-    
-    
-      
-    
-    
-      
-      
-        
+
+
+
+
+
+
+
+
+
           <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/github.min.css" crossorigin="anonymous" title="hl-light" disabled="">
           <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/dracula.min.css" crossorigin="anonymous" title="hl-dark">
-        
-      
-    
 
-    
 
-    
 
-  
 
-  
-  
+
+
+
+
+
+
+
+
   <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/css">
-  
 
-  
-  
-  
+
+
+
+
   <link rel="stylesheet" href="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/academic.min.72134522a6d8af1d590edd0a7d65c8ad.css">
 
-  
 
-  
-  
-  
 
-  
+
+
+
+
+
 
   <link rel="manifest" href="https://pvnieo.github.io/index.webmanifest">
   <link rel="icon" type="image/png" href="https://pvnieo.github.io/img/icon-32.png">
@@ -98,32 +98,32 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
 
   <link rel="canonical" href="https://pvnieo.github.io/post/lr-finder-demo/">
 
-  
-  
-  
-  
-    
-  
-  
+
+
+
+
+
+
+
   <meta property="twitter:card" content="summary_large_image">
-  
+
   <meta property="og:site_name" content="pvnieo">
   <meta property="og:url" content="https://pvnieo.github.io/post/lr-finder-demo/">
   <meta property="og:title" content="How to use the Learning Rate Finder in Pytorch | pvnieo">
   <meta property="og:description" content="Learning rate finder During the training of neural networks, one of the most important hyperparameters, and which largely influences the convergence of the latter, is the learning rate. Choosing a good learning rate is not a simple task, and it is often done using a grid search. However, this can take a long time, especially if the network is very large.
 In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, Leslie Smith presented a method for finding a good learning rate for the majority of gradient based optimizers."><meta property="og:image" content="https://pvnieo.github.io/post/lr-finder-demo/featured.jpg">
   <meta property="twitter:image" content="https://pvnieo.github.io/post/lr-finder-demo/featured.jpg"><meta property="og:locale" content="en-us">
-  
-    
+
+
       <meta property="article:published_time" content="2019-08-10T00:00:00+00:00">
-    
+
     <meta property="article:modified_time" content="2019-08-10T00:00:00+00:00">
-  
-
-  
 
 
-  
+
+
+
+
 
 
 
@@ -376,16 +376,16 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
       </div>
 
       <div id="search-box">
-        
+
         <input name="q" id="search-query" placeholder="Search..." autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" type="search">
-        
+
       </div>
 
     </section>
     <section class="section-search-results">
 
       <div id="search-hits">
-        
+
       </div>
 
     </section>
@@ -393,162 +393,162 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
 </aside>
 
 
-  
+
 <nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
   <div class="container">
 
-    
+
       <a class="navbar-brand" href="https://pvnieo.github.io/"><img src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/icon.png" alt="pvnieo"></a>
-      
+
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span><i class="fas fa-bars"></i></span>
       </button>
-      
 
-    
+
+
     <div class="collapse navbar-collapse" id="navbar">
 
-      
-      
+
+
       <ul class="navbar-nav mr-auto">
-        
 
-        
 
-        
-        
-        
-          
-        
 
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <li class="nav-item">
           <a class="nav-link " href="https://pvnieo.github.io/#about"><span>Home</span></a>
         </li>
 
-        
-        
 
-        
 
-        
-        
-        
-          
-        
 
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <li class="nav-item">
           <a class="nav-link " href="https://pvnieo.github.io/#projects"><span>Projects</span></a>
         </li>
 
-        
-        
 
-        
 
-        
-        
-        
-          
-        
 
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <li class="nav-item">
           <a class="nav-link " href="https://pvnieo.github.io/#posts"><span>Posts</span></a>
         </li>
 
-        
-        
 
-        
 
-        
-        
-        
-          
-        
 
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <li class="nav-item">
           <a class="nav-link " href="https://pvnieo.github.io/#contact"><span>Contact</span></a>
         </li>
 
-        
-        
 
-      
+
+
+
       </ul>
       <ul class="navbar-nav ml-auto">
-      
 
-        
 
-        
+
+
+
         <li class="nav-item">
           <a class="nav-link js-search" href="https://pvnieo.github.io/post/lr-finder-demo/#"><i class="fas fa-search" aria-hidden="true"></i></a>
         </li>
-        
 
-        
 
-        
+
+
+
         <li class="nav-item">
           <a class="nav-link js-dark-toggle" href="https://pvnieo.github.io/post/lr-finder-demo/#"><i class="fas fa-sun" aria-hidden="true"></i></a>
         </li>
-        
+
 
       </ul>
 
@@ -559,7 +559,6 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
 
   <article class="article" itemscope="" itemtype="http://schema.org/Article">
 
-  
 
 
 
@@ -580,16 +579,17 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
 
 
 
-  
-  
+
+
+
 
 
 <div class="article-container pt-3">
   <h1 itemprop="name">How to use the Learning Rate Finder in Pytorch</h1>
 
-  
 
-  
+
+
 
 
 
@@ -598,88 +598,88 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
 
 <div class="article-metadata">
 
-  
-  
 
-  
+
+
+
   <span class="article-date">
-    
-    
-      
-    
+
+
+
+
     <time>Aug 10, 2019</time>
   </span>
-  
 
-  
 
-  
+
+
+
   <span class="middot-divider"></span>
   <span class="article-reading-time">
     5 min read
   </span>
-  
 
-  
-  
-  
 
-  
-  
 
-  
-    
+
+
+
+
+
+
+
+
 <div class="share-box" aria-hidden="true">
   <ul class="share">
-    
-      
-      
-      
-        
-      
-      
-      
+
+
+
+
+
+
+
+
       <li>
         <a href="https://twitter.com/intent/tweet?url=https://pvnieo.github.io/post/lr-finder-demo/&amp;text=How%20to%20use%20the%20Learning%20Rate%20Finder%20in%20Pytorch" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
-    
-      
-      
-      
-        
-      
-      
-      
+
+
+
+
+
+
+
+
       <li>
         <a href="https://www.facebook.com/sharer.php?u=https://pvnieo.github.io/post/lr-finder-demo/&amp;t=How%20to%20use%20the%20Learning%20Rate%20Finder%20in%20Pytorch" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook-f"></i>
         </a>
       </li>
-    
-      
-      
-      
-        
-      
-      
-      
+
+
+
+
+
+
+
+
       <li>
         <a href="https://www.linkedin.com/shareArticle?url=https://pvnieo.github.io/post/lr-finder-demo/&amp;title=How%20to%20use%20the%20Learning%20Rate%20Finder%20in%20Pytorch" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
-    
+
   </ul>
 </div>
 
 
-  
+
 
 </div>
 
-  
+
 
 
 
@@ -702,7 +702,7 @@ In his paper &quot;Cyclical Learning Rates for Training Neural Networks&quot;, L
 <div class="article-header container-fluid featured-image-wrapper mt-4 mb-4" style="max-width: 1920px; max-height: 1200px;">
   <div style="position: relative">
     <img src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/featured.jpg" alt="" class="featured-image">
-    
+
   </div>
 </div>
 
@@ -903,25 +903,23 @@ stds = [<span class="hljs-string">"stds"</span>] + [np.std(accs[lr]) <span class
 
     </code></div><code>
 
-    
 
 
-    
+
+
 
 <div class="article-tags">
-  
+
   <a class="badge badge-light" href="https://pvnieo.github.io/tags/optimization/">Optimization</a>
-  
+
   <a class="badge badge-light" href="https://pvnieo.github.io/tags/learning-rate/">Learning rate</a>
-  
+
   <a class="badge badge-light" href="https://pvnieo.github.io/tags/pytorch/">Pytorch</a>
-  
+
 </div>
 
 
 
-    
-      
 
 
 
@@ -930,157 +928,159 @@ stds = [<span class="hljs-string">"stds"</span>] + [np.std(accs[lr]) <span class
 
 
 
-  
 
 
 
 
 
-  
-  
-  
-    
-  
-  
+
+
+
+
+
+
+
+
+
   <div class="media author-card" itemscope="" itemtype="http://schema.org/Person">
-    
-      
+
+
       <img class="portrait mr-3" src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/avatar_hu89c008f47ff8946cace8a4fb81c3947b_29222_250x250_fill_lanczos_center_2.png" itemprop="image" alt="Avatar">
-    
+
 
     <div class="media-body">
       <h5 class="card-title" itemprop="name"><a href="https://pvnieo.github.io/">Souhaib Attaiki</a></h5>
       <h6 class="card-subtitle">Applied Mathematics / Computer Science student</h6>
       <p class="card-text" itemprop="description">Passionate about computer vision and machine learning.</p>
       <ul class="network-icon" aria-hidden="true">
-        
-          
-          
-          
-            
-          
-          
-          
-          
-          
-            
-          
+
+
+
+
+
+
+
+
+
+
+
+
           <li>
             <a itemprop="sameAs" href="https://www.linkedin.com/in/souhaib-attaiki-595121102/" target="_blank" rel="noopener">
               <i class="fab fa-linkedin"></i>
             </a>
           </li>
-        
-          
-          
-          
-            
-          
-          
-          
-          
-          
-            
-          
+
+
+
+
+
+
+
+
+
+
+
+
           <li>
             <a itemprop="sameAs" href="https://www.researchgate.net/profile/Souhaib_Attaiki" target="_blank" rel="noopener">
               <i class="fab fa-researchgate"></i>
             </a>
           </li>
-        
-          
-          
-          
-            
-          
-          
-          
-          
-          
-            
-          
+
+
+
+
+
+
+
+
+
+
+
+
           <li>
             <a itemprop="sameAs" href="https://github.com/pvnieo" target="_blank" rel="noopener">
               <i class="fab fa-github"></i>
             </a>
           </li>
-        
+
       </ul>
     </div>
   </div>
 
 
 
-      
-      
+
+
       <div class="article-widget">
         <div class="hr-light"></div>
         <h3>Related</h3>
         <ul>
-          
+
           <li><a href="https://pvnieo.github.io/project/mangan/">ManGan</a></li>
-          
+
           <li><a href="https://pvnieo.github.io/project/project-euler/">Project Euler solutions</a></li>
-          
+
         </ul>
       </div>
-      
-    
 
-    
 
-    
+
+
+
+
 
 
   </code></div><code>
 </code></article><code>
 
-      
 
-    
-    
-    
+
+
+
+
     <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/mathjax-config.js"></script>
-    
 
-    
-    
-    
+
+
+
+
       <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
       <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
       <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
       <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
 
-      
+
         <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/mermaid.min.js" integrity="sha256-0w92bcB21IY5+rGI84MGj52jNfHNbXVeQLrZ0CGdjNY=" crossorigin="anonymous" title="mermaid"></script>
-      
 
-      
-        
+
+
+
         <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
-        
+
         <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/python.min.js"></script>
-        
+
         <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/c++.min.js"></script>
-        
-      
 
-      
-      
+
+
+
+
       <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/MathJax.js" integrity="sha256-GhM+5JHb6QUzOQPXSJLEWP7R73CbkisjzK5Eyij4U9w=" crossorigin="anonymous" async=""></script>
-      
-    
 
-    
-    
 
-    
-    
+
+
+
+
+
+
     <script>hljs.initHighlightingOnLoad();</script>
-    
 
-    
-    
+
+
+
     <script>
       const search_index_filename = "/index.json";
       const i18n = {
@@ -1095,13 +1095,13 @@ stds = [<span class="hljs-string">"stds"</span>] + [np.std(accs[lr]) <span class
         'talk' : "Talks"
         };
     </script>
-    
 
-    
-    
 
-    
-    
+
+
+
+
+
     <script id="search-hit-fuse-template" type="text/x-template">
       <div class="search-hit" id="summary-{{key}}">
       <div class="search-hit-content">
@@ -1113,51 +1113,51 @@ stds = [<span class="hljs-string">"stds"</span>] + [np.std(accs[lr]) <span class
       </div>
       </div>
     </script>
-    
 
-    
-    
+
+
+
     <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
     <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
-    
 
-    
-    
 
-    
-    
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-      
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script src="./How to use the Learning Rate Finder in Pytorch _ pvnieo_files/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
 
-    
 
 
 
 
 
 
-  
+
+
   <div class="container">
     <footer class="site-footer">
-  
+
 
   <p class="powered-by">
-    © 2020 Souhaib Attaiki, made with lots of ❤️ and steaming hot ☕️. 
-    
+    © 2020 Souhaib Attaiki, made with lots of ❤️ and steaming hot ☕️.
+
     <span class="float-right" aria-hidden="true">
       <a href="https://pvnieo.github.io/post/lr-finder-demo/#" id="back_to_top">
         <span class="button_icon">
@@ -1165,14 +1165,14 @@ stds = [<span class="hljs-string">"stds"</span>] + [np.std(accs[lr]) <span class
         </span>
       </a>
     </span>
-    
+
   </p>
 </footer>
 
   </div>
-  
 
-  
+
+
 <div id="modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
