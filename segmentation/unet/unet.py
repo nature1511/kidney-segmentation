@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-import torch
 from ..unet.parts import DoubleConv, Down, Up_conv, Attention_block
 
 
