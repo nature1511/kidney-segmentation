@@ -2,6 +2,11 @@ from typing import Optional, TypeVar
 
 import pandas as pd
 
+from torch.utils.data import Dataset
+from typing import Optional, TypeVar
+from pathlib import Path
+from torch.utils.data import Dataset
+
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
 
@@ -49,3 +54,42 @@ def random_sub_df(
     df_no_empty = df[df["is_empty"] == False].sample(num_pos_tiles_to_sample)
     frames = [df_empty, df_no_empty]
     return pd.concat(frames).sort_index()
+
+
+class Tilling_loader(Dataset):
+    """Creating a dataloader for image tiling"""
+
+    def __init__(
+        self,
+        name_data: str,
+        path_to_df: str,
+        use_random_sub: bool = False,
+        empty_tile_pct: int = 0,
+        sample_limit: Optional[int] = None,
+        transform=None,
+    ):
+        super().__init__()
+        self.name_data = name_data
+        self.path_to_df = Path(path_to_df)
+        self.use_random_sub = use_random_sub
+        self.empty_tile_pct = empty_tile_pct
+        self.sample_limit = sample_limit
+        self.transform = transform
+
+        df = pd.read_csv(self.path_to_df)
+        if self.use_random_sub:
+            self.df = random_sub_df(
+                df=df,
+                sample_limit=self.sample_limit,
+                empty_tile_pct=self.empty_tile_pct,
+            )
+        else:
+            self.df = df
+
+    def __len__(self) -> int:
+        return self.df.shape[0]
+
+    def __getitem__(self, idx) -> tuple:
+        img_path, lb_path, is_empty, bbx, px_stats, size = self.df.iloc[idx, :].values
+
+        return img_path, lb_path, is_empty, bbx, px_stats, size
