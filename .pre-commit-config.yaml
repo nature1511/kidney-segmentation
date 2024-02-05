@@ -10,9 +10,6 @@ repos:
       - id: check-docstring-first
       - id: check-json
       - id: check-xml
-
-
-
       - id: mixed-line-ending
       - id: pretty-format-json
         args: [--autofix]
