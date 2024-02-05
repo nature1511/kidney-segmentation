@@ -4,14 +4,14 @@ from ..unet.parts import DoubleConv, Down, Up_conv, Attention_block
 
 
 class UNet(nn.Module):
-    def __init__(self, n_channels, n_classes, bilinear=False):
+    def __init__(self, n_channels, n_classes, n1=64, bilinear=False):
         super(UNet, self).__init__()
         self.n_channels = n_channels
         self.n_classes = n_classes
 
         super(UNet, self).__init__()
-        n1 = 64
-        size_channels = [n1, n1 * 2, n1 * 4, n1 * 8, n1 * 16]
+        self.n1 = n1
+        size_channels = [self.n1, self.n1 * 2, self.n1 * 4, self.n1 * 8, self.n1 * 16]
 
         self.inc = DoubleConv(n_channels, size_channels[0])
         self.down1 = Down(size_channels[0], size_channels[1])
@@ -68,13 +68,13 @@ class UNet(nn.Module):
 
 
 class AttU_Net(nn.Module):
-    def __init__(self, n_channels, n_classes, bilinear=False):
+    def __init__(self, n_channels, n_classes, n1=64, bilinear=False):
         super(AttU_Net, self).__init__()
         self.n_channels = n_channels
         self.n_classes = n_classes
 
-        n1 = 32
-        size_channels = [n1, n1 * 2, n1 * 4, n1 * 8, n1 * 16]
+        self.n1 = n1
+        size_channels = [self.n1, self.n1 * 2, self.n1 * 4, self.n1 * 8, self.n1 * 16]
 
         self.inc = DoubleConv(n_channels, size_channels[0])
         self.down1 = Down(size_channels[0], size_channels[1])
@@ -139,7 +139,7 @@ class AttU_Net(nn.Module):
         # print(up3.shape, d1.shape)
         att2 = self.att2(up3, d1)
         up2 = self.up2(up3)  # 64
-        up2 = torch.cat([d1, up2], dim=1)  # 128
+        up2 = torch.cat([att2, up2], dim=1)  # 128
         up2 = self.up_conv2(up2)  # 64
 
         out = self.conv1x1(up2)
