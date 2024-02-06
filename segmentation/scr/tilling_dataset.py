@@ -1,8 +1,8 @@
 from typing import Optional, TypeVar
 from pathlib import Path
 import pandas as pd
+import cv2
 from torch.utils.data import Dataset
-from typing import Optional, TypeVar
 
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
@@ -53,7 +53,7 @@ def random_sub_df(
     return pd.concat(frames).sort_index()
 
 
-class Tilling_Loader(Dataset):
+class Tilling_Dataset(Dataset):
     """Creating a dataloader for image tiling"""
 
     def __init__(
@@ -87,6 +87,22 @@ class Tilling_Loader(Dataset):
         return self.df.shape[0]
 
     def __getitem__(self, idx) -> tuple:
-        img_path, lb_path, is_empty, bbx, px_stats, size = self.df.iloc[idx, :].values
+        img_path, lb_path, _, bbx, _, size = self.df.iloc[idx, :].values
+        gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
+        img = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)  # (H,W ,C)
+        mask = cv2.imread(lb_path, cv2.IMREAD_GRAYSCALE)  # .astype('float32')
+        if self.transform:
+            augmented = self.transform(image=img, mask=mask)  # c h w
+            img, mask = augmented["image"], augmented["mask"]
 
-        return img_path, lb_path, is_empty, bbx, px_stats, size
+        else:
+            img = torch.from_numpy(img)
+            img = torch.permute(img, (2, 0, 1))
+            mask = torch.from_numpy(mask)
+
+        img = img.type(torch.float32)
+        img = img / 255
+        mask = mask.type(torch.float32)
+        mask = mask / 255
+
+        return img, mask, bbx, size

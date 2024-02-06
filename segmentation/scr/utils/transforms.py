@@ -87,6 +87,7 @@ def get_transform(transform_type: Optional[str] = "weak"):
                     p=CFG.p_rot,
                 ),
                 ToTensorV2(p=1),
+                # A.Normalize(p=1)
             ],
             p=1,
         )
@@ -95,7 +96,8 @@ def get_transform(transform_type: Optional[str] = "weak"):
         return A.Compose(
             [
                 # A.Resize(img_size, img_size, p=1.0),
-                ToTensorV2(p=1)
+                ToTensorV2(p=1),
+                # A.Normalize(p=1)
             ],
             p=1.0,
         )
