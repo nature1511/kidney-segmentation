@@ -53,7 +53,7 @@ def random_sub_df(
     return pd.concat(frames).sort_index()
 
 
-class Tilling_loader(Dataset):
+class Tilling_Loader(Dataset):
     """Creating a dataloader for image tiling"""
 
     def __init__(

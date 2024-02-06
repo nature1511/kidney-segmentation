@@ -10,6 +10,7 @@ def get_transform(transform_type: Optional[str] = "weak"):
     """Generate transform for data
     Args:
         transform_type (str): transform for train or test. Defaults to 'train'.
+        list transform_type ["weak", "strong" , "val"]
     """
 
     if transform_type == "weak":

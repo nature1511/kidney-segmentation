@@ -48,6 +48,16 @@ class DiceLoss(nn.Module):
 class BCE_DICE(nn.Module):
     """Combination of Cross-Entropy and Soft Dice Losses.
     Based on https://arxiv.org/pdf/2209.06078.pdf
+
+    Attributes:
+
+        mode (str): ["BCE", "DICE", "SUM", "SOFT_TUNNING", "HARD_TUNNING"].
+        Defaults to "BCE".
+
+        num_epoch (int): Number of model training epochs. Defaults to 1.
+        smooth (float, optional): smoothing in DICE loss. Defaults to 0.0.
+        eps (float, optional): eps in DICE loss. Defaults to 1e-7.
+
     """
 
     def __init__(
@@ -57,6 +67,7 @@ class BCE_DICE(nn.Module):
         smooth: float = 0.0,
         eps: float = 1e-7,
     ):
+
         super().__init__()
         self.mode = mode
         self.smooth = smooth
