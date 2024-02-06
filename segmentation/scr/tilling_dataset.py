@@ -1,4 +1,5 @@
 from typing import Optional, TypeVar
+import torch
 from pathlib import Path
 import pandas as pd
 import cv2
