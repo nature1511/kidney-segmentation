@@ -123,7 +123,7 @@ class Generate_Tiled_Dataset(Dataset):
 
                     if self.strong_empty:
                         is_empty = is_empty or (
-                            mask_tile.sum() < (0.05 * self.tile_size[0])
+                            mask_tile.sum() < (0.1 * self.tile_size[0])
                         )
                     if is_empty:
                         empty += 1

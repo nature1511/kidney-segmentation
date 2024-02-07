@@ -55,7 +55,16 @@ def random_sub_df(
 
 
 class Tilling_Dataset(Dataset):
-    """Creating a dataloader for image tiling"""
+    """Creating a Dataset for image tiling
+
+    Attributes:
+        name_data (str): name dataset
+        path_to_df (str): path to data df
+        use_random_sub (bool): random sample. Defaults to False.
+        empty_tile_pct (int): empty % in random sample. Defaults to 0.
+        sample_limit (Optional[int], optional): limit random sampl. Defaults to None.
+        transform : transforms for data augmentation. Defaults to None.
+    """
 
     def __init__(
         self,
@@ -66,6 +75,7 @@ class Tilling_Dataset(Dataset):
         sample_limit: Optional[int] = None,
         transform=None,
     ):
+
         super().__init__()
         self.name_data = name_data
         self.path_to_df = Path(path_to_df)
@@ -89,7 +99,7 @@ class Tilling_Dataset(Dataset):
 
     def __getitem__(self, idx) -> tuple:
         img_path, lb_path, _, bbx, _, size = self.df.iloc[idx, :].values
-        gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
+        gray = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
         img = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)  # (H,W ,C)
         mask = cv2.imread(lb_path, cv2.IMREAD_GRAYSCALE)  # .astype('float32')
         if self.transform:
@@ -101,9 +111,6 @@ class Tilling_Dataset(Dataset):
             img = torch.permute(img, (2, 0, 1))
             mask = torch.from_numpy(mask)
 
-        img = img.type(torch.float32)
-        img = img / 255
-        mask = mask.type(torch.float32)
-        mask = mask / 255
-
+        img = img.to(torch.uint8)  # .type(torch.float32)
+        mask = mask
         return img, mask, bbx, size
