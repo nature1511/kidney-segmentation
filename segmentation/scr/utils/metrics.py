@@ -9,6 +9,18 @@ def dice_coef(
     smooth=0,
     # epsilon=1e-7,
 ):
+    """Calculate Dice coef
+
+    Args:
+        y_pred (torch.Tensor): predicitions from logits
+        y_true (torch.Tensor): labels
+        thr (float, optional): cutoff threshold. Defaults to 0.5.
+        dim (tuple, optional): dimensions. Defaults to (-1, -2).
+        smooth (int, optional): smooth. Defaults to 0.
+
+    Returns:
+        _type_: _description_
+    """
     y_pred = y_pred.sigmoid()
     y_true = y_true.to(torch.float32)
     y_pred = (y_pred > thr).to(torch.float32)

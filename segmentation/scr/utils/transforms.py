@@ -25,6 +25,7 @@ def get_transform(transform_type: Optional[str] = "weak"):
                 A.RandomBrightnessContrast(),
                 A.CLAHE(clip_limit=5),
                 ToTensorV2(p=1),
+                A.Normalize(mean=CFG.mean_till1, std=CFG.std_till1, p=1),
             ],
             p=1,
         )
@@ -87,7 +88,7 @@ def get_transform(transform_type: Optional[str] = "weak"):
                     p=CFG.p_rot,
                 ),
                 ToTensorV2(p=1),
-                # A.Normalize(p=1)
+                A.Normalize(mean=CFG.mean_till1, std=CFG.std_till1, p=1),
             ],
             p=1,
         )
@@ -97,7 +98,7 @@ def get_transform(transform_type: Optional[str] = "weak"):
             [
                 # A.Resize(img_size, img_size, p=1.0),
                 ToTensorV2(p=1),
-                # A.Normalize(p=1)
+                A.Normalize(mean=CFG.mean_till1, std=CFG.std_till1, p=1),
             ],
             p=1.0,
         )

@@ -4,13 +4,16 @@ from pathlib import Path
 import pandas as pd
 import cv2
 from torch.utils.data import Dataset
-
+from segmentation.scr.utils.utils import set_seed
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
 
 
 def random_sub_df(
-    df: PandasDataFrame, sample_limit: Optional[int] = None, empty_tile_pct: int = 10
+    df: PandasDataFrame,
+    sample_limit: Optional[int] = None,
+    empty_tile_pct: int = 10,
+    random_seed: Optional[int] = None,
 ):
     """_summary_
 
@@ -18,10 +21,14 @@ def random_sub_df(
         df PandasDataFrame: dataframe
         sample_limit int: sample limit. Defaults to None.
         empty_tile_pct int: percentage of empty masks. Defaults to 10.
+        random_seed int: random seed. Defaults to None.
 
     Returns:
         PandasDataFrame: dataframe with a certain percentage of empty masks
     """
+    if random_seed:
+        set_seed(random_seed)
+
     if sample_limit is None:
         sample_limit = df.shape[0]
     print(sample_limit)
@@ -61,9 +68,12 @@ class Tilling_Dataset(Dataset):
         name_data (str): name dataset
         path_to_df (str): path to data df
         use_random_sub (bool): random sample. Defaults to False.
+        random_seed int: random seed. Defaults to None.
         empty_tile_pct (int): empty % in random sample. Defaults to 0.
         sample_limit (Optional[int], optional): limit random sampl. Defaults to None.
         transform : transforms for data augmentation. Defaults to None.
+
+        If no transformation is used, then converts to torchtenzor and divides by 255
     """
 
     def __init__(
@@ -71,6 +81,7 @@ class Tilling_Dataset(Dataset):
         name_data: str,
         path_to_df: str,
         use_random_sub: bool = False,
+        random_seed: Optional[int] = None,
         empty_tile_pct: int = 0,
         sample_limit: Optional[int] = None,
         transform=None,
@@ -80,6 +91,7 @@ class Tilling_Dataset(Dataset):
         self.name_data = name_data
         self.path_to_df = Path(path_to_df)
         self.use_random_sub = use_random_sub
+        self.random_seed = random_seed
         self.empty_tile_pct = empty_tile_pct
         self.sample_limit = sample_limit
         self.transform = transform
@@ -90,6 +102,7 @@ class Tilling_Dataset(Dataset):
                 df=df,
                 sample_limit=self.sample_limit,
                 empty_tile_pct=self.empty_tile_pct,
+                random_seed=random_seed,
             )
         else:
             self.df = df
@@ -111,6 +124,8 @@ class Tilling_Dataset(Dataset):
             img = torch.permute(img, (2, 0, 1))
             mask = torch.from_numpy(mask)
 
-        img = img.to(torch.uint8)  # .type(torch.float32)
-        mask = mask
+        img = img.type(torch.float32)  #  .to(torch.uint8)
+        mask = mask.type(torch.float32)
+        img = img / 255.0
+        mask = mask / 255.0
         return img, mask, bbx, size
