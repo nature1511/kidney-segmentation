@@ -27,7 +27,8 @@ def train_one_loop(
 
     dataset_size = 0
     optimizer.zero_grad()
-    pbar = tqdm(enumerate(train_loader), total=len(train_loader), desc="Train ")
+    pbar = tqdm(enumerate(train_loader), total=len(
+        train_loader), desc="Train ")
     for step, batch in pbar:
         images, masks, _, _ = batch
         images = images.to(device, dtype=torch.float)
@@ -95,7 +96,8 @@ def valid_one_epoch(model, dataloader, loss_func, device=CFG.device):
 
         running_loss += loss.item() * batch_size
         dataset_size += batch_size
-        val_dice = dice_coef(y_pred=y_pred, y_true=masks).cpu().detach().numpy()
+        val_dice = dice_coef(
+            y_pred=y_pred, y_true=masks).cpu().detach().numpy()
         val_scores.append([val_dice])
         del images
         del masks
@@ -143,7 +145,7 @@ def train_model(
             device=device,
         )
         val_loss, dice_metric = valid_one_epoch(
-            model=model, loss_func=loss_fn, dataloader=val_loader, device=device
+            model=model, loss_func=loss_func, dataloader=val_loader, device=device
         )
         train_losses.append(train_loss)
         val_losses.append(val_loss)
@@ -194,6 +196,7 @@ def train_model(
 
     print(
         "Training complete in {:.0f}h {:.0f}m {:.0f}s".format(
-            total_time // 3600, (total_time % 3600) // 60, (total_time % 3600) % 60
+            total_time // 3600, (total_time %
+                                 3600) // 60, (total_time % 3600) % 60
         )
     )
