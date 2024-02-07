@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from segmentation.config import Configs as CFG
+from segmentation.config import CFG
 
 
 def set_seed(seed: int = CFG.random_seed) -> None:
