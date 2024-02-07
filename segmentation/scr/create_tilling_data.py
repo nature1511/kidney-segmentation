@@ -10,7 +10,7 @@ import rasterio
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
-from segmentation.config import Configs as CFG
+from segmentation.config import CFG
 from collections import defaultdict
 from segmentation.scr.utils.rle_coding import rle_decode, rle_encode
 

@@ -3,7 +3,7 @@ from typing import Optional
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
 
-from segmentation.config import Configs as CFG
+from segmentation.config import CFG
 
 
 def get_transform(transform_type: Optional[str] = "weak"):

@@ -1,7 +1,7 @@
 import torch
 
 
-class Configs:
+class CFG:
 
     # configs for tilling dataset kidney 1
     path_img_kidney1 = "data\\train\\kidney_1_dense\\images"
@@ -25,11 +25,15 @@ class Configs:
     p_rot = 0.3
     p_aug = 0.3
     # cofigs for train / eval model
-    random_seed = 42
+    random_seed = 0
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    train_batch_size = 8
+    train_batch_size = 2
     n_accumulate = max(1, 8 // train_batch_size)
     valid_batch_size = train_batch_size * 2
-
+    clip_norm = 5
     epochs = 28
     lr = 3e-4
+    dice_th = 0.5
+
+    path_to_save_state_model = "weight"
+    path_weight_model = "weight"
