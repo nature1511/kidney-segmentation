@@ -1,8 +1,9 @@
 import os
 import random
+from pathlib import Path
 import numpy as np
 import torch
-from pathlib import Path
+
 from segmentation.config import Configs as CFG
 
 
@@ -27,7 +28,7 @@ def save_model(
     model_name="model_name",
     path="weight",
     lr_scheduler=None,
-):
+) -> None:
     """Saving the model and training parameters
 
     Args:

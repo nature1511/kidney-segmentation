@@ -31,7 +31,7 @@ def random_sub_df(
 
     if sample_limit is None:
         sample_limit = df.shape[0]
-    print(sample_limit)
+
     # pct_no_empty = df['is_empty'].value_counts(normalize=True)[False]
     # pct_empty = df['is_empty'].value_counts(normalize=True)[True]
     count_no_empty = df["is_empty"].value_counts()[False]
