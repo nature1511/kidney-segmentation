@@ -33,8 +33,9 @@ def get_transform(transform_type: str = "train"):
 
                 A.GaussNoise(var_limit=0.05, p=0.2),
                 # A.CLAHE(clip_limit=5),
-                ToTensorV2(p=1),
+
                 A.Normalize(mean=CFG.mean_till1, std=CFG.std_till1, p=1),
+                ToTensorV2(p=1),
             ],
             p=1,
         )
@@ -43,8 +44,9 @@ def get_transform(transform_type: str = "train"):
         return A.Compose(
             [
                 # A.Resize(img_size, img_size, p=1.0),
-                ToTensorV2(p=1),
+
                 A.Normalize(mean=CFG.mean_till1, std=CFG.std_till1, p=1),
+                ToTensorV2(p=1),
             ],
             p=1.0,
         )

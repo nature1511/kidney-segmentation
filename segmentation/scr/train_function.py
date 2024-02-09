@@ -7,7 +7,6 @@ import time
 from colorama import Fore, Style
 from segmentation.scr.utils.metrics import dice_coef
 from segmentation.config import CFG
-from segmentation.scr.utils import losses
 from segmentation.scr.utils.utils import save_model
 
 
@@ -129,11 +128,11 @@ def train_model(
 ):
 
     best_metric = -np.inf
-    loss_mas, metrics_mas, train_losses, val_losses = [], [], [], []
-    best_epoch = 0
+    metrics_mas, train_losses, val_losses = [], [], []
     total_time = 0
     for epoch in range(num_epochs):
         start = time.time()
+        print()
         print(f"Epoch {epoch + 1}/{num_epochs}")
         print("-" * 10)
         train_loss = train_one_loop(
@@ -148,21 +147,20 @@ def train_model(
             model=model, loss_func=loss_func, dataloader=val_loader, device=device
         )
         train_losses.append(train_loss)
-        val_losses.append(val_loss)
+        metrics_mas.append(val_loss)
         metrics_mas.append(dice_metric)
         if scheduler:
             if scheduler.__class__.__name__ == "ReduceLROnPlateau":
                 scheduler.step(dice_metric)
             else:
                 scheduler.step()
-        if loss_func.__class__.__name__:
+        if loss_func.__class__.__name__ == 'BCE_DICE':
             loss_func.update_n()
 
         # deep copy the model
         print(f"Epoch #{epoch+1} train loss: {train_loss:.3f}")
         print(f"Epoch #{epoch+1} val loss: {val_loss:.3f}")
         print(f"Epoch #{epoch+1} dice_metric: {dice_metric}")
-        loss_mas.append(losses)
 
         if dice_metric > best_metric:
             print(f"{c_}Valid metrics Improved ({best_metric} ---> {dice_metric})")
@@ -200,3 +198,8 @@ def train_model(
                                  3600) // 60, (total_time % 3600) % 60
         )
     )
+    print(train_losses)
+    print()
+    print(val_losses)
+    print()
+    print(metrics_mas)
