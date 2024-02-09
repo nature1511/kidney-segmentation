@@ -1,4 +1,5 @@
 import torch
+from segmentation.config import CFG
 
 
 def dice_coef(
@@ -6,7 +7,7 @@ def dice_coef(
     y_true: torch.Tensor,
     thr=0.5,
     dim=(-1, -2),
-    smooth=0,
+    smooth=CFG.smooth,
     # epsilon=1e-7,
 ):
     """Calculate Dice coef
@@ -26,5 +27,6 @@ def dice_coef(
     y_pred = (y_pred > thr).to(torch.float32)
     inter = (y_true * y_pred).sum(dim=dim)
     den = y_true.sum(dim=dim) + y_pred.sum(dim=dim)
-    dice = ((2 * inter + smooth) / (den + smooth)).mean()  # .clamp_min(epsilon)
+    dice = ((2 * inter + smooth) / (den + smooth)
+            ).mean()  # .clamp_min(epsilon)
     return dice

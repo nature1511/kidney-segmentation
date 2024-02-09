@@ -2,6 +2,8 @@ import torch
 
 
 class CFG:
+    # metrics
+    smooth = 1e-7
 
     # configs for tilling dataset kidney 1
     path_img_kidney1 = "data\\train\\kidney_1_dense\\images"
