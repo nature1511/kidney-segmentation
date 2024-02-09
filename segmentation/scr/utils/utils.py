@@ -40,6 +40,7 @@ def save_model(
     """
     if isinstance(path, str):
         path = Path(path)
+    path.mkdir(parents=True, exist_ok=True)
     path_save_state = path / ("state " + model_name + ".pth")
     state = {
         "model_name": model_name,

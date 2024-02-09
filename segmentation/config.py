@@ -28,10 +28,11 @@ class CFG:
     p_aug = 0.3
     # cofigs for train / eval model
     random_seed = 0
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    train_batch_size = 8
+    train_batch_size = 4
     n_accumulate = max(1, 32 // train_batch_size)
-    valid_batch_size = train_batch_size * 2
+    valid_batch_size = train_batch_size
     clip_norm = 5
     epochs = 28
     lr = 3e-4
