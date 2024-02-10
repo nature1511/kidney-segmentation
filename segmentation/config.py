@@ -27,7 +27,7 @@ class CFG:
     p_rot = 0.3
     p_aug = 0.3
     # cofigs for train / eval model
-    random_seed = 0
+    random_seed = 100
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     train_batch_size = 4

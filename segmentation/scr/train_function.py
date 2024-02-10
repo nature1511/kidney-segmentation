@@ -147,7 +147,7 @@ def train_model(
             model=model, loss_func=loss_func, dataloader=val_loader, device=device
         )
         train_losses.append(train_loss)
-        metrics_mas.append(val_loss)
+        val_losses.append(val_loss)
         metrics_mas.append(dice_metric)
         if scheduler:
             if scheduler.__class__.__name__ == "ReduceLROnPlateau":
