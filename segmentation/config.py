@@ -9,17 +9,17 @@ class CFG:
     path_img_kidney1 = "data\\train\\kidney_1_dense\\images"
     path_lb_kidney1 = "data\\train\\kidney_1_dense\\labels"
     path_df_kidney_1_till = "data\\kidney_1_tilling.csv"
-    tile_size = (256, 256)
+    tile_size = (512, 512)
     overlap_pct = 0
     cache_dir = "data"
-    mean_till1 = (0.2425, 0.2425, 0.2425)
-    std_till1 = (0.1766, 0.1766, 0.1766)
+    mean_till1 = (0.2479, 0.2479, 0.2479)
+    std_till1 = (0.1773, 0.1773, 0.1773)
 
     # configs for tilling dataset kidney 3
     path_img_kidney3 = "data\\train\\kidney_3_sparse\\images"
     path_lb_kidney3 = "data\\train\\kidney_3_dense\\labels"
     path_df_kidney_3_till = "data\\kidney_3_tilling.csv"
-    tile_size = (256, 256)
+    tile_size = (512, 512)
     overlap_pct = 0
     cache_dir = "data"
 

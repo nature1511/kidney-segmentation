@@ -34,7 +34,6 @@ def train_one_loop(
         masks = masks.to(device, dtype=torch.float)
 
         batch_size = images.shape[0]
-        dataset_size += batch_size
 
         y_pred = model(images)
 

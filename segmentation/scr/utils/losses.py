@@ -10,7 +10,7 @@ class DiceLoss(nn.Module):
     """
 
     def __init__(
-        self, from_logits: bool = True, smooth: float = 0.0, eps: float = 1e-7
+        self, from_logits: bool = True, smooth: float = 0, eps: float = 1e-7
     ):
         super().__init__()
         self.from_logits = from_logits
@@ -35,7 +35,7 @@ class DiceLoss(nn.Module):
         intersection = torch.sum(y_pred * y_true, dim=(0, 2))
         union = torch.sum(y_pred + y_true, dim=(0, 2))
         dice_score = (2.0 * intersection + self.smooth) / (
-            union + self.smooth + 1e-8
+            union + self.smooth
         ).clamp_min(self.eps)
         loss = 1.0 - dice_score
 
@@ -112,7 +112,8 @@ class BCE_DICE(nn.Module):
             y_true (torch.Tensor): label
 
         """
-        dice_loss = DiceLoss(from_logits=True, smooth=self.smooth, eps=self.eps)
+        dice_loss = DiceLoss(
+            from_logits=True, smooth=self.smooth, eps=self.eps)
         return dice_loss(y_pred, y_true)
 
     def sum(self, y_pred, y_true):
