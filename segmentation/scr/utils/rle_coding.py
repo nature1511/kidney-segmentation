@@ -1,11 +1,9 @@
 import numpy as np
 
-"""
-Code with description of rle coding.
-https://www.youtube.com/watch?v=LG8lbm_W380
-https://github.com/rohan-paul/MachineLearning-DeepLearning-Code-for-my-YouTube-Channel/blob/master/Computer_Vision/run_length_encoding.ipynb
 
-"""
+# Code with description of rle coding.
+# https://www.youtube.com/watch?v=LG8lbm_W380
+# https://github.com/rohan-paul/MachineLearning-DeepLearning-Code-for-my-YouTube-Channel/blob/master/Computer_Vision/run_length_encoding.ipynb
 
 
 def rle_encode(img):
@@ -25,7 +23,6 @@ def rle_decode(mask_rle, shape):
     mask_rle: run-length as string formated (start length)
     shape: (height,width) of array to return
     Returns numpy array, 1 - mask, 0 - background
-
     """
     s = mask_rle.split()
     starts, lengths = [np.asarray(x, dtype=int) for x in (s[0:][::2], s[1:][::2])]

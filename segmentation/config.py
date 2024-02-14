@@ -2,41 +2,35 @@ import torch
 
 
 class CFG:
-    # metrics
+    # ============== dice metrics ============
     smooth = 1e-7
+    # ============== pred target =============
+    target_size = 1
 
-    # configs for tilling dataset kidney 1
-    path_img_kidney1 = "data\\train\\kidney_1_dense\\images"
-    path_lb_kidney1 = "data\\train\\kidney_1_dense\\labels"
-    path_df_kidney_1_till = "data\\kidney_1_tilling.csv"
-    tile_size = (512, 512)
-    overlap_pct = 0
-    cache_dir = "data"
-    mean_till1 = (0.2479, 0.2479, 0.2479)
-    std_till1 = (0.1773, 0.1773, 0.1773)
+    # ============== model CFG =============
+    model_name = "Unet"
+    backbone = "mobilenet_v2"
 
-    # configs for tilling dataset kidney 3
-    path_img_kidney3 = "data\\train\\kidney_3_sparse\\images"
-    path_lb_kidney3 = "data\\train\\kidney_3_dense\\labels"
-    path_df_kidney_3_till = "data\\kidney_3_tilling.csv"
-    tile_size = (512, 512)
-    overlap_pct = 0
-    cache_dir = "data"
+    in_chans = 5  # 65
+    # ============== training CFG =============
+    image_size = 512
+    input_size = 512
 
-    # configs for transforms
-    p_rot = 0.3
-    p_aug = 0.3
-    # cofigs for train / eval model
-    random_seed = 100
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
     train_batch_size = 4
-    n_accumulate = max(1, 32 // train_batch_size)
+    n_accumulate = max(1, 16 // train_batch_size)
     valid_batch_size = train_batch_size
-    clip_norm = 5
-    epochs = 28
-    lr = 3e-4
-    dice_th = 0.5
+
+    epochs = 20
+    lr = 6e-5
+    chopping_percentile = 1e-3
+    # ============== fold =============
+    valid_id = 1
+
+    # ============== augmentation =============
+    p_augm = 0.5
+    p_rot = 0.8
+    # ============== settings ===================
+    random_seed = 42
+    device = "cuda" if torch.cuda.is_available() else "cpu"
 
     path_to_save_state_model = "weight"
-    path_weight_model = "weight"
