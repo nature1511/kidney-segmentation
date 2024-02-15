@@ -1,5 +1,6 @@
 import numpy as np
 from ...config import CFG
+from ..utils.utils import resize_to_size
 
 
 def create_tillings(images, overlap_pct=CFG.tilling_overlap_pct):
@@ -9,8 +10,7 @@ def create_tillings(images, overlap_pct=CFG.tilling_overlap_pct):
     min_overlap = float(overlap_pct) * 0.01
     max_stride = CFG.image_size * (1.0 - min_overlap)
 
-    print(images.shape)
-    height, width = images.shape[1], images.shape[2]
+    height, width = images.shape[-2], images.shape[-1]
     num_patches = np.ceil(np.array([height, width]) / max_stride).astype(np.int32)
 
     starts = [

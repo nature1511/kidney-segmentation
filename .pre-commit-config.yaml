@@ -23,9 +23,3 @@ repos:
           files: ^(breastcancer|tests)
           args: ["--profile", "black", "--trailing-comma", "--multi-line", "3"]
 
-    # autodelete unused imports
-    - repo: https://github.com/hadialqattan/pycln
-      rev: v1.1.0
-      hooks:
-        - id: pycln
-          args: [ --all ]
