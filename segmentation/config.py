@@ -8,8 +8,6 @@ class CFG:
     target_size = 1
 
     # ============== model CFG =============
-    model_name = "Unet"
-    backbone = "mobilenet_v2"
 
     in_chans = 5  # 65
     # ============== training CFG =============
@@ -33,4 +31,6 @@ class CFG:
     random_seed = 42
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    path_to_save_state_model = "weight"
+    path_to_state_model = "weight"
+    # ============= inference ===================
+    tilling_overlap_pct = 50

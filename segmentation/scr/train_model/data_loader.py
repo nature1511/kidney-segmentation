@@ -46,7 +46,7 @@ def load_data(paths, is_label=False):
 
 
 class Kaggld_Dataset(Dataset):
-    def __init__(self, x: list, y: list, arg=False):
+    def __init__(self, x: list, y: list, arg=False, CFG=CFG):
         super(Dataset, self).__init__()
         self.x = x  # list[(C,H,W),...]
         self.y = y  # list[(C,H,W),...]
