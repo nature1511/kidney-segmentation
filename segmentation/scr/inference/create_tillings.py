@@ -1,6 +1,5 @@
 import numpy as np
 from ...config import CFG
-from ..utils.utils import resize_to_size
 
 
 def create_tillings(images, overlap_pct=CFG.tilling_overlap_pct):
